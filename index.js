@@ -34,10 +34,10 @@ function showMenu() {
   rl.question("Pilih menu (1/2/0): ", (answer) => {
     rl.close();
     if (answer === "1") {
-      const runScreeningOnce = require("./Screnning");
+      const runScreeningOnce = require("./logic/Screnning");
       runScreeningOnce(showMenu); // selesai screening -> balik ke menu
     } else if (answer === "2") {
-      const runAnalisaSaham = require("./AnalisaSaham");
+      const runAnalisaSaham = require("./logic/AnalisaSaham");
       runAnalisaSaham(showMenu); // selesai analisa -> balik ke menu
     } else {
       console.log("Keluar...".faded);
