@@ -51,5 +51,5 @@ Server berjalan di: [http://localhost:3000/api/stocks](http://localhost:3000/api
 ### 4. Jalankan Screener Terminal
 
 ```bash
-node Screnning.js
+node index.js
 ```
