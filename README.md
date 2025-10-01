@@ -53,3 +53,9 @@ Server berjalan di: [http://localhost:3000/api/stocks](http://localhost:3000/api
 ```bash
 node Screnning.js
 ```
+
+### 5. Jalankan Warrant Screener
+
+```bash
+node WarrantScreener.js
+```
