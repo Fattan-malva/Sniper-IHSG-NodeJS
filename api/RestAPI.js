@@ -13,7 +13,7 @@ app.use(express.json());
 
 // Fungsi untuk mengambil semua kode saham dari file lokal
 function getAllIDXStockCodes() {
-    const csvText = fs.readFileSync('./stockcode.csv', 'utf8');
+    const csvText = fs.readFileSync('./api/stockcode.csv', 'utf8');
     const records = parse.parse(csvText, { columns: true, skip_empty_lines: true });
     return records.map(rec => rec.Code?.trim() + '.JK').filter(Boolean);
 }
