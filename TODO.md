@@ -1,13 +1,3 @@
-# TODO for Warrant Screener & API
-
-- [x] Create WarrantScreener.js file
-- [x] Implement function to generate warrant symbols from stock codes
-- [x] Fetch warrant data using yahoo-finance2
-- [x] Fetch parent stock data for comparison
-- [x] Simplify to list all warrants with -W, show price, strike, expire date, parent price
-- [x] Display results in a simple table
-- [x] Test the screener by running it
-- [x] Integrate warrant endpoints into RestAPI.js
-- [x] Add warrant data caching and refresh
-- [x] Add /api/warrants and /api/warrants/:symbol routes
-- [x] Update API documentation and server messages
+- [x] Refactor runAnalisaSaham function in logic/AnalisaSaham.js to ensure readline interface is properly handled on repeated calls
+- [x] Change order of callback and rl.close() to call callback first then close readline with setTimeout
+- [ ] Test menu 2 multiple times to confirm input works on repeated attempts

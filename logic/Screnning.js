@@ -321,11 +321,11 @@ async function runScreeningOnce(callback) {
 ░╚═══██╗██║╚████║██║██╔═══╝░██╔══╝░░██╔══██╗  ██║██╔══██║░╚═══██╗██║░░╚██╗
 ██████╔╝██║░╚███║██║██║░░░░░███████╗██║░░██║  ██║██║░░██║██████╔╝╚██████╔╝
 ╚═════╝░╚═╝░░╚══╝╚═╝╚═╝░░░░░╚══════╝╚═╝░░╚═╝  ╚═╝╚═╝░░╚═╝╚═════╝░░╚═════╝░
-                IDX SCALPING SNIPER • by Fattan Malva • v2.0
+                IDX SCALPING SNIPER • by Fattan Malva • v3.0
 `.accent
   );
   console.log(
-    `⏳ ${new Date().toLocaleString("id-ID")} | Screening sekali jalan\n`.faded
+    `⏳ ${new Date().toLocaleString("id-ID")} | Happy Cuan\n`.faded
   );
 
   const stocks = await getStockData();

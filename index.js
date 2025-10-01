@@ -1,7 +1,7 @@
 const readline = require("readline");
 const colors = require("colors");
 
-// Tambahkan theme sebelum penggunaan warna!
+// Theme
 colors.setTheme({
   main: "green",
   accent: "brightGreen",
@@ -14,6 +14,12 @@ colors.setTheme({
   tableCell: "brightGreen",
 });
 
+// buat rl global
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
 function showMenu() {
   console.log(
     `
@@ -22,25 +28,24 @@ function showMenu() {
 ========================================
 1. Screening Saham Momentum Scalping
 2. Analisa Saham Tertentu
+3. Screening Warran
 0. Keluar
 `.info
   );
 
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-
-  rl.question("Pilih menu (1/2/0): ", (answer) => {
-    rl.close();
+  rl.question("Pilih menu (1/2/3/0): ", (answer) => {
     if (answer === "1") {
       const runScreeningOnce = require("./logic/Screnning");
-      runScreeningOnce(showMenu); // selesai screening -> balik ke menu
+      runScreeningOnce(showMenu, rl);
     } else if (answer === "2") {
       const runAnalisaSaham = require("./logic/AnalisaSaham");
-      runAnalisaSaham(showMenu); // selesai analisa -> balik ke menu
+      runAnalisaSaham(showMenu, rl);
+    } else if (answer === "3") {
+      const runWarrantScreener = require("./logic/WarrantScreener");
+      runWarrantScreener(showMenu, rl);
     } else {
       console.log("Keluar...".faded);
+      rl.close();
       process.exit(0);
     }
   });
