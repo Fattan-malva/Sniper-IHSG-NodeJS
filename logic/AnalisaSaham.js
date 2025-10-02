@@ -15,6 +15,46 @@ function formatCurrency(num) {
   return "Rp" + num.toLocaleString("id-ID");
 }
 
+function calculateStrategy(data) {
+  const price = data.price;
+  const ma50 = data.fullData?.fiftyDayAverage || 0;
+  const ma200 = data.fullData?.twoHundredDayAverage || 0;
+  const high = data.dayHigh || price * 1.05;
+  const low = data.dayLow || price * 0.95;
+
+  let entry = price;
+  let tp1, tp2, sl, note;
+
+  // === Analisis Momentum ===
+  if (price > ma50 && price > ma200) {
+    note = "Momentum Bullish ✅";
+    entry = price;
+    tp1 = price * 1.05;
+    tp2 = high * 1.02;
+    sl = Math.min(ma50, low, entry * 0.97); // SL pasti di bawah entry
+  } else if (price > ma200 && price < ma50) {
+    note = "Sideways ⚠️ - hati-hati entry";
+    entry = price * 0.99;
+    tp1 = price * 1.03;
+    tp2 = high;
+    sl = Math.min(ma200 * 0.98, entry * 0.97);
+  } else {
+    note = "Bearish ❌ - risiko tinggi";
+    entry = price;
+    tp1 = price * 1.02;
+    tp2 = price * 1.04;
+    sl = entry * 0.97; // fix: selalu 3% di bawah entry
+  }
+
+  // Pastikan SL < entry
+  if (sl >= entry) {
+    sl = entry * 0.97;
+  }
+
+  return { entry, tp1, tp2, sl, note };
+}
+
+
 function showAnalysis(data) {
   console.log(`\nAnalisa Saham: ${data.symbol.accent} - ${data.name.main}`);
   console.log(`Harga        : ${formatCurrency(data.price).main}`);
@@ -37,20 +77,20 @@ function showAnalysis(data) {
     console.log(`Analyst Rate : ${(data.fullData.averageAnalystRating || "-").toString().info}`);
   }
 
-  // ===== Tambahan Entry Position, TP, SL =====
-  const entry = data.price;
-  const tp1 = entry * 1.05; // +5%
-  const tp2 = entry * 1.1; // +10%
-  const sl = entry * 0.97; // -3%
+  // ===== Strategi Dinamis =====
+  const strat = calculateStrategy(data);
+  const rr = ((strat.tp1 - strat.entry) / (strat.entry - strat.sl)).toFixed(2);
 
   console.log("\nStrategi Trading:".warn);
-  console.log(`Entry Posisi : ${formatCurrency(entry).purple}`);
-  console.log(`Take Profit  : ${formatCurrency(tp1)} (TP1), ${formatCurrency(tp2)} (TP2)`);
-  console.log(`Stop Loss    : ${formatCurrency(sl).danger}`);
-  console.log(`Risk/Reward  : ${((tp1 - entry) / (entry - sl)).toFixed(2)}`.info);
+  console.log(`Sinyal        : ${strat.note}`);
+  console.log(`Entry Posisi  : ${formatCurrency(strat.entry).purple}`);
+  console.log(`Take Profit   : ${formatCurrency(strat.tp1)} (TP1), ${formatCurrency(strat.tp2)} (TP2)`);
+  console.log(`Stop Loss     : ${formatCurrency(strat.sl).danger}`);
+  console.log(`Risk/Reward   : ${rr}`.info);
 
-  console.log(`\nLast Update  : ${new Date(data.lastUpdated).toLocaleString("id-ID").faded}`);
+  console.log(`\nLast Update   : ${new Date(data.lastUpdated).toLocaleString("id-ID").faded}`);
 }
+
 
 function runAnalisaSaham(callback, rl) {
   rl.question("Masukkan Kode/Nama Saham (Contoh: BBCA): ".accent, async (query) => {
